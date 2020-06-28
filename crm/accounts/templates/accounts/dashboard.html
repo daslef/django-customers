@@ -19,7 +19,7 @@
                 </tr>
                 {% for customer in customers %}
                 <tr>
-                    <td><a href="" class="btn btn-info btn-sm">View</a></td>
+                    <td><a href="{% url 'customer' customer.id %}" class="btn btn-info btn-sm">View</a></td>
                     <td>{{ customer.name }}</td>
                     <td>{{ customer.phone }}</td>
                 </tr>
@@ -31,9 +31,6 @@
         <h5>Last 5 Orders</h5>
         <hr>
         <div class="card card-body">
-            <a href="{% url 'create_order' %}" class="btn btn-primary btn-sm btn-block">
-                Create Order
-            </a>
             <table class="table table-sm">
                 <tr>
                     <th>Product</th>
