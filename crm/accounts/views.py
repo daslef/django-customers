@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from .models import *
 from .forms import *
+from .filters import OrderFilter
 
 def home(request):
     customers = Customer.objects.all()
@@ -28,10 +29,12 @@ def products(request):
 def customer(request, pk):
     customer = Customer.objects.get(id=pk)
     customer_orders = customer.order_set.all()
+    filter_ = OrderFilter()
     context = {
         'customer': customer, 
         'orders': customer_orders, 
-        'orders_count': customer_orders.count()
+        'orders_count': customer_orders.count(),
+        'filter_': filter_
         }
     return render(request, 'accounts/customer.html', context)
 
