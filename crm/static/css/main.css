@@ -1,0 +1,20 @@
+body {
+    background-color: rgba(27, 153, 139, 1);
+    color: rgb(60, 60, 60);
+}
+
+#orders-total {
+    background-color: rgba(222, 205, 245, 1);
+}
+
+#orders-pending {
+    background-color: rgba(101, 97, 118, 1);
+}
+
+#orders-delivered {
+    background-color: rgba(83, 77, 86, 1);
+}
+
+a.navbar-brand img {
+    height: 48px;
+}
