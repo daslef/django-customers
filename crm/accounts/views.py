@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from .models import *
 from .forms import *
 from .filters import OrderFilter
@@ -22,12 +24,31 @@ def home(request):
     
     return render(request, 'accounts/dashboard.html', context)
 
-def signup(request):
+def signup_handle(request):
     form = CreateUserForm()
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for ' + user)
+            return redirect('login')
+
     context = {'form': form}
     return render(request, 'accounts/signup.html', context)
 
-def login(request):
+def login_handle(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password =  request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.info(request, 'Username or Password is incorrect')
+
     return render(request, 'accounts/login.html')
 
 def products(request):
