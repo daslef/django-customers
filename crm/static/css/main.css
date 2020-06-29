@@ -17,3 +17,21 @@ body {
 a.navbar-brand img {
     height: 48px;
 }
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 400px;
+    margin: 10px auto;
+}
+
+.filter-form * {
+    width: 100%;
+}
+
+.filter-form button {
+    display: block;
+    margin-top: 20px;
+}

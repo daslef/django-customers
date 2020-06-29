@@ -29,7 +29,8 @@ def products(request):
 def customer(request, pk):
     customer = Customer.objects.get(id=pk)
     customer_orders = customer.order_set.all()
-    filter_ = OrderFilter()
+    filter_ = OrderFilter(request.GET, queryset=customer_orders)
+    customer_orders = filter_.qs
     context = {
         'customer': customer, 
         'orders': customer_orders, 
