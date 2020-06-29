@@ -22,6 +22,14 @@ def home(request):
     
     return render(request, 'accounts/dashboard.html', context)
 
+def signup(request):
+    form = CreateUserForm()
+    context = {'form': form}
+    return render(request, 'accounts/signup.html', context)
+
+def login(request):
+    return render(request, 'accounts/login.html')
+
 def products(request):
     products = Product.objects.all()
     return render(request, 'accounts/products.html', {'products': products})
