@@ -3,10 +3,12 @@ from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from .filters import OrderFilter
 
+@login_required(login_url='login')
 def home(request):
     customers = Customer.objects.all()
     total_customers = customers.count()
@@ -25,8 +27,10 @@ def home(request):
     return render(request, 'accounts/dashboard.html', context)
 
 def signup_handle(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    
     form = CreateUserForm()
-
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
@@ -39,6 +43,8 @@ def signup_handle(request):
     return render(request, 'accounts/signup.html', context)
 
 def login_handle(request):
+    if request.user.is_authenticated:
+        return redirect('home')  
     if request.method == 'POST':
         username = request.POST.get('username')
         password =  request.POST.get('password')
@@ -51,10 +57,17 @@ def login_handle(request):
 
     return render(request, 'accounts/login.html')
 
+@login_required(login_url='login')
+def logout_handle(request):
+    logout(request)
+    return redirect('login')
+
+@login_required(login_url='login')
 def products(request):
     products = Product.objects.all()
     return render(request, 'accounts/products.html', {'products': products})
 
+@login_required(login_url='login')
 def customer(request, pk):
     customer = Customer.objects.get(id=pk)
     customer_orders = customer.order_set.all()
@@ -68,6 +81,7 @@ def customer(request, pk):
         }
     return render(request, 'accounts/customer.html', context)
 
+@login_required(login_url='login')
 def createOrder(request, pk):
     OrderFormSet = inlineformset_factory(
         Customer, 
@@ -91,6 +105,7 @@ def createOrder(request, pk):
 
     return render(request, 'accounts/order_form.html', context)
 
+@login_required(login_url='login')
 def updateOrder(request, pk):
     order = Order.objects.get(id=pk)
     form = OrderForm(instance=order)
@@ -107,6 +122,7 @@ def updateOrder(request, pk):
 
     return render(request, 'accounts/order_form.html', context)
 
+@login_required(login_url='login')
 def deleteOrder(request, pk):
     order = Order.objects.get(id=pk)
     if request.method == 'POST':
