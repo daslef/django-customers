@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from .filters import OrderFilter
+from .decorators import unauthenticated_user
 
 @login_required(login_url='login')
 def home(request):
@@ -26,10 +27,8 @@ def home(request):
     
     return render(request, 'accounts/dashboard.html', context)
 
-def signup_handle(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    
+@unauthenticated_user
+def signup_handle(request): 
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -38,13 +37,11 @@ def signup_handle(request):
             user = form.cleaned_data.get('username')
             messages.success(request, 'Account was created for ' + user)
             return redirect('login')
-
     context = {'form': form}
     return render(request, 'accounts/signup.html', context)
 
+@unauthenticated_user
 def login_handle(request):
-    if request.user.is_authenticated:
-        return redirect('home')  
     if request.method == 'POST':
         username = request.POST.get('username')
         password =  request.POST.get('password')
@@ -54,7 +51,6 @@ def login_handle(request):
             return redirect('home')
         else:
             messages.info(request, 'Username or Password is incorrect')
-
     return render(request, 'accounts/login.html')
 
 @login_required(login_url='login')
@@ -132,3 +128,6 @@ def deleteOrder(request, pk):
         'order': order.product.name
     }
     return render(request, 'accounts/delete_form.html', context)
+
+def userProfile(request):
+    return render(request, 'accounts/user.html', context={})
