@@ -7,9 +7,10 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from .filters import OrderFilter
-from .decorators import unauthenticated_user
+from .decorators import unauthenticated_user, allowed_users
 
 @login_required(login_url='login')
+@allowed_users(['admin', 'moderator'])
 def home(request):
     customers = Customer.objects.all()
     total_customers = customers.count()
@@ -59,11 +60,13 @@ def logout_handle(request):
     return redirect('login')
 
 @login_required(login_url='login')
+@allowed_users(['admin', 'moderator'])
 def products(request):
     products = Product.objects.all()
     return render(request, 'accounts/products.html', {'products': products})
 
 @login_required(login_url='login')
+@allowed_users(['admin', 'moderator'])
 def customer(request, pk):
     customer = Customer.objects.get(id=pk)
     customer_orders = customer.order_set.all()
@@ -78,6 +81,7 @@ def customer(request, pk):
     return render(request, 'accounts/customer.html', context)
 
 @login_required(login_url='login')
+@allowed_users(['admin', 'moderator'])
 def createOrder(request, pk):
     OrderFormSet = inlineformset_factory(
         Customer, 
@@ -102,6 +106,7 @@ def createOrder(request, pk):
     return render(request, 'accounts/order_form.html', context)
 
 @login_required(login_url='login')
+@allowed_users(['admin', 'moderator'])
 def updateOrder(request, pk):
     order = Order.objects.get(id=pk)
     form = OrderForm(instance=order)
@@ -119,6 +124,7 @@ def updateOrder(request, pk):
     return render(request, 'accounts/order_form.html', context)
 
 @login_required(login_url='login')
+@allowed_users(['admin', 'moderator'])
 def deleteOrder(request, pk):
     order = Order.objects.get(id=pk)
     if request.method == 'POST':
