@@ -18,3 +18,12 @@ def allowed_users(allowed_roles=[]):
             return HttpResponse('You are not allowed to view this page')
         return wrapper
     return decorator
+
+def admin_only(view_function):
+    def wrapper(request, *args, **kwargs):
+        if request.user.groups.exists():
+            group = request.user.groups.first().name
+            if group == 'customer':
+                return redirect('user-profile')
+        return view_function(request, *args, **kwargs)
+    return wrapper

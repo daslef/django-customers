@@ -7,10 +7,10 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from .filters import OrderFilter
-from .decorators import unauthenticated_user, allowed_users
+from .decorators import unauthenticated_user, allowed_users, admin_only
 
 @login_required(login_url='login')
-@allowed_users(['admin', 'moderator'])
+@admin_only
 def home(request):
     customers = Customer.objects.all()
     total_customers = customers.count()
