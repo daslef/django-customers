@@ -40,6 +40,9 @@ def signup_handle(request):
 
             customer_group = Group.objects.get(name='customer')
             user.groups.add(customer_group)
+            Customer.objects.create(
+                user=user
+            )
 
             messages.success(request, 'Account was created for ' + username)
             return redirect('login')
@@ -140,6 +143,19 @@ def deleteOrder(request, pk):
     }
     return render(request, 'accounts/delete_form.html', context)
 
+@login_required(login_url='login')
+@allowed_users(['customer'])
 def userProfile(request):
     user = request.user
-    return render(request, 'accounts/user.html', context={'user': user})
+    orders = user.customer.order_set.all()
+    orders_total = orders.count()
+    orders_delivered = orders.filter(status='Delivered').count()
+    orders_pending = orders.filter(status='Pending').count()
+    context = {
+        'user': user, 
+        'orders': orders,
+        'orders_total': orders_total,
+        'orders_delivered': orders_delivered,
+        'orders_pending': orders_pending,
+        }
+    return render(request, 'accounts/user.html', context)
