@@ -9,8 +9,10 @@
     </button>
     <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
       <div class="navbar-nav">
+        {% if user.is_admin or user.is_staff %}
         <a class="nav-item nav-link active" href="/">Dashboard <span class="sr-only">(current)</span></a>
         <a class="nav-item nav-link" href="{% url 'products' %}">Products</a>
+        {% endif %}
       </div>
       <div class="navbar-nav align-items-center">
         <span>{{ request.user }}</span>

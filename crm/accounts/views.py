@@ -4,6 +4,7 @@ from django.forms import inlineformset_factory
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 from .models import *
 from .forms import *
 from .filters import OrderFilter
@@ -34,9 +35,13 @@ def signup_handle(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')
-            messages.success(request, 'Account was created for ' + user)
+            user = form.save()
+            username = form.cleaned_data.get('username')
+
+            customer_group = Group.objects.get(name='customer')
+            user.groups.add(customer_group)
+
+            messages.success(request, 'Account was created for ' + username)
             return redirect('login')
     context = {'form': form}
     return render(request, 'accounts/signup.html', context)
@@ -136,4 +141,5 @@ def deleteOrder(request, pk):
     return render(request, 'accounts/delete_form.html', context)
 
 def userProfile(request):
-    return render(request, 'accounts/user.html', context={})
+    user = request.user
+    return render(request, 'accounts/user.html', context={'user': user})
