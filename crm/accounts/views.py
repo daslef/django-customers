@@ -41,7 +41,8 @@ def signup_handle(request):
             customer_group = Group.objects.get(name='customer')
             user.groups.add(customer_group)
             Customer.objects.create(
-                user=user
+                user=user,
+                name=user.username,
             )
 
             messages.success(request, 'Account was created for ' + username)
@@ -159,3 +160,14 @@ def userProfile(request):
         'orders_pending': orders_pending,
         }
     return render(request, 'accounts/user.html', context)
+
+@login_required(login_url='login')
+@allowed_users(['customer'])
+def userSettings(request):
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            form.save()
+    return render(request, 'accounts/settings.html', {'form': form})

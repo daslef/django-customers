@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="row mx-3 my-2">
-    <h3>User Profile</h3>
+    <h3>{{ request.user.username }}'s Profile</h3>
 </div>
 {% include 'accounts/status.html' %}
 <div class="row mx-1 my-2">

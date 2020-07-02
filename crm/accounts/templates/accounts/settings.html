@@ -1,0 +1,26 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row align-items-center justify-content-center">
+    <div class="col-md-3 mx-4">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <a href="{% url 'user-profile' %}" class="btn btn-info btn-block">Back to Main Page</a>
+                <hr>
+                <h3 class="card-title text-center">Account Settings</h4>
+                <hr>
+            </div>
+            <img src="{{ request.user.customer.userpic.url }}" class="card-img-top" alt="...">
+        </div>
+    </div>
+    <div class="col-md-5">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="btn btn-primary" value="Save">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

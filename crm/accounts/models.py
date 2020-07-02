@@ -2,10 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=60, null=True)
     phone = models.CharField(max_length=60, null=True)
     email = models.CharField(max_length=60, null=True)
+    userpic = models.ImageField(null=True, blank=True, default='default-men.jpg')
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

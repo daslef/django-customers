@@ -15,7 +15,8 @@
         {% endif %}
       </div>
       <div class="navbar-nav align-items-center">
-        <span>{{ request.user }}</span>
+        <span class="mx-2">{{ request.user }}</span>
+        <a href="{% url 'user-settings' %}" class="nav-item nav-link">Settings</a>
         <a href="{% url 'logout' %}" class="nav-item nav-link">Log Out</a>
       </div>
     </div>
