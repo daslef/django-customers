@@ -3,3 +3,4 @@ __pycache__
 migrations
 email.py
 **/db.sqlite3
+db.py
