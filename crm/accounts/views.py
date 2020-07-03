@@ -40,7 +40,7 @@ def signup_handle(request):
             messages.success(request, 'Account was created for ' + username)
             return redirect('login')
     context = {'form': form}
-    return render(request, 'accounts/signup.html', context)
+    return render(request, 'accounts/auth/signup.html', context)
 
 @unauthenticated_user
 def login_handle(request):
@@ -53,7 +53,7 @@ def login_handle(request):
             return redirect('home')
         else:
             messages.info(request, 'Username or Password is incorrect')
-    return render(request, 'accounts/login.html')
+    return render(request, 'accounts/auth/login.html')
 
 @login_required(login_url='login')
 def logout_handle(request):
