@@ -9,6 +9,7 @@ from .forms import *
 from .filters import OrderFilter
 from .decorators import unauthenticated_user, allowed_users, admin_only
 
+
 @login_required(login_url='login')
 @admin_only
 def home(request):
@@ -28,6 +29,7 @@ def home(request):
     
     return render(request, 'accounts/dashboard.html', context)
 
+
 @unauthenticated_user
 def signup_handle(request): 
     form = CreateUserForm()
@@ -42,6 +44,7 @@ def signup_handle(request):
     context = {'form': form}
     return render(request, 'accounts/auth/signup.html', context)
 
+
 @unauthenticated_user
 def login_handle(request):
     if request.method == 'POST':
@@ -55,16 +58,19 @@ def login_handle(request):
             messages.info(request, 'Username or Password is incorrect')
     return render(request, 'accounts/auth/login.html')
 
+
 @login_required(login_url='login')
 def logout_handle(request):
     logout(request)
     return redirect('login')
+
 
 @login_required(login_url='login')
 @allowed_users(['admin', 'moderator'])
 def products(request):
     products = Product.objects.all()
     return render(request, 'accounts/products.html', {'products': products})
+
 
 @login_required(login_url='login')
 @allowed_users(['admin', 'moderator'])
@@ -80,6 +86,7 @@ def customer(request, pk):
         'filter_': filter_
         }
     return render(request, 'accounts/customer.html', context)
+
 
 @login_required(login_url='login')
 @allowed_users(['admin', 'moderator'])
@@ -106,6 +113,7 @@ def createOrder(request, pk):
 
     return render(request, 'accounts/order_form.html', context)
 
+
 @login_required(login_url='login')
 @allowed_users(['admin', 'moderator'])
 def updateOrder(request, pk):
@@ -124,6 +132,7 @@ def updateOrder(request, pk):
 
     return render(request, 'accounts/order_form.html', context)
 
+
 @login_required(login_url='login')
 @allowed_users(['admin', 'moderator'])
 def deleteOrder(request, pk):
@@ -135,6 +144,7 @@ def deleteOrder(request, pk):
         'order': order.product.name
     }
     return render(request, 'accounts/delete_form.html', context)
+
 
 @login_required(login_url='login')
 @allowed_users(['customer'])
@@ -152,6 +162,7 @@ def userProfile(request):
         'orders_pending': orders_pending,
         }
     return render(request, 'accounts/user.html', context)
+
 
 @login_required(login_url='login')
 @allowed_users(['customer'])

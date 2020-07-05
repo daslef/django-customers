@@ -1,7 +1,4 @@
 .env
 __pycache__
 migrations
-# email.py
-# storage.py
-# db.py
 **/db.sqlite3
