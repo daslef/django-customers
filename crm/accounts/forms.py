@@ -9,6 +9,24 @@ class CustomerForm(ModelForm):
         model = Customer
         fields = '__all__'
         exclude = ['user']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'py-1 px-1 text-gray-900 outline-none block h-full w-full',
+                'autocomplete': 'false',
+                'placeholder': 'enter new username'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'py-1 px-1 outline-none block h-full w-full',
+                'autocomplete': 'false'
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'py-1 px-1 outline-none block h-full w-full',
+                'autocomplete': 'false'
+            }),
+            'userpic': forms.FileInput(attrs={
+
+            })
+        }
 
 class OrderForm(ModelForm):
     class Meta:

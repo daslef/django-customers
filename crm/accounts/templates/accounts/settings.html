@@ -2,24 +2,64 @@
 {% load static %}
 {% block content %}
 
-<div class="row align-items-center justify-content-center">
+<div class="row w-100 align-items-center justify-content-center">
     <div class="col-md-3 mx-4">
         <div class="card" style="width: 18rem;">
-            <div class="card-body">
+            <div class="card-body pb-0">
                 <a href="{% url 'user-profile' %}" class="btn btn-info btn-block">Back to Main Page</a>
                 <hr>
                 <h3 class="card-title text-center">Account Settings</h4>
                 <hr>
             </div>
-            <img src="{{ request.user.customer.userpic.url }}" class="card-img-top" alt="...">
+            <div class="card-body pt-0">
+                <img src="{{ request.user.customer.userpic.url }}" class="card-img-top" alt="...">
+            </div>
         </div>
     </div>
-    <div class="col-md-5">
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" class="btn btn-primary" value="Save">
-        </form>
+    <div class="col-md-4 mx-4">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="bg-white shadow rounded-lg p-6">
+            
+            <div class="grid lg:grid-cols-1 gap-6 my-4">
+                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                    <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                        <p> <label for="lastname" class="bg-white text-gray-600 px-1">Email *</label> </p>
+                    </div>
+                    <p>{{ form.email }}</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-6">
+                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                    <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                        <p> <label for="name" class="bg-white text-gray-600 px-1">Username *</label> </p>
+                    </div>
+                    <p>{{ form.name }}</p>
+                </div>
+                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                    <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                        <p><label for="username" class="bg-white text-gray-600 px-1">Phone *</label></p>
+                    </div>
+                    <p>{{ form.phone }}</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-1 gap-6 my-4">
+                <label class="w-100 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue">
+                    <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                    </svg>
+                    <span class="mt-2 text-base leading-normal">Select a file</span>
+                    <input type='file' name='userpic' accept='image/*' id='id_userpic' class="hidden" />
+                </label>
+            </div>
+
+            <div class="p-2 w-full">
+                <input type="submit" class="flex mx-auto text-white bg-purple-500 border-0 py-2 px-8 focus:outline-none hover:bg-purple-600 rounded text-lg" value="Save">
+            </div>
+        </div>
+    </form>
     </div>
 </div>
 
